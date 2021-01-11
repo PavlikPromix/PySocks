@@ -1,4 +1,12 @@
 import socket
+import os
+import io
+import PIL.Image as Image
+from array import array
+
+def decim(dta):
+    image = Image.open(io.BytesIO(dta))
+    image.save("received.png")
 
 soc = socket.socket() #creating socket() object
 soc.bind(('', 9090)) #binding our server to sertain type of connection (argument 1) and port (argiment 2)
@@ -8,9 +16,14 @@ conn, addr = soc.accept() #accepting incoming connections; method .accept() retu
 print(addr, " connected")
 
 while True:
-    data = conn.recv(1024) #receiving 1Kb of data
+    data = conn.recv(10240000) #receiving 1Kb of data
     print (data.decode('utf-8'))
     if not data:
         break
-    conn.send(data.upper()) #sending answer
+    if data.decode('utf-8') == 'img':
+        data = conn.recv(10240000)
+        decim(data)
+        conn.send(bytes("Image received!", 'utf-8'))
+    else:
+        conn.send(data.upper()) #sending answer
 conn.close() #closing connection
