@@ -1,5 +1,6 @@
 import socket 
 import os
+import time
 
 sock = socket.socket() #creating socket() obj
 sock.connect(('localhost', 9090)) #connecting to 'localhost' with port 9090
@@ -9,6 +10,7 @@ if uin == 'img':
     f = img.read()
     imb = bytearray(f)
     sock.send(bytes("img", 'utf-8')) 
+    time.sleep(0.5)
     sock.send(imb)
 else:
     sock.send(bytes(uin, 'utf-8')) #sending message to 'localhost'

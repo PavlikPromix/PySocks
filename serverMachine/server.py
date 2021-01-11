@@ -2,7 +2,9 @@ import socket
 import os
 import io
 import PIL.Image as Image
+from PIL import ImageFile
 from array import array
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def decim(dta):
     image = Image.open(io.BytesIO(dta))
@@ -17,7 +19,6 @@ print(addr, " connected")
 
 while True:
     data = conn.recv(10240000) #receiving 1Kb of data
-    print (data.decode('utf-8'))
     if not data:
         break
     if data.decode('utf-8') == 'img':
