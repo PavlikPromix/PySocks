@@ -18,7 +18,7 @@ conn, addr = soc.accept() #accepting incoming connections; method .accept() retu
 print(addr, " connected")
 
 while True:
-    data = conn.recv(10240000) #receiving 1Kb of data
+    data = conn.recv(10240000) #receiving 10Mb of data
     if not data:
         break
     if data.decode('utf-8') == 'img':
