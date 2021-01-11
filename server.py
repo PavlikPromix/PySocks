@@ -1,4 +1,4 @@
-import socket #importing socket lib
+import socket
 
 soc = socket.socket() #creating socket() object
 soc.bind(('', 9090)) #binding our server to sertain type of connection (argument 1) and port (argiment 2)
