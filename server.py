@@ -11,5 +11,5 @@ while True:
     data = conn.recv(1024) #receiving 1Kb of data
     if not data:
         break
-    conn.send(data.upper()) #sending answer
+    conn.send(data.join(bytes(" - accepted", 'utf-8'))) #sending answer
 conn.close() #closing connection
