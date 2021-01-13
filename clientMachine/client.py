@@ -1,20 +1,23 @@
 import socket 
+import io
 import os
-import time
+from PIL import Image
 
 sock = socket.socket() #creating socket() obj
 sock.connect((input("Enter ip: "), 9090)) #connecting to 'localhost' with port 9090
-uin = input("$ ")
-sock.send(bytes(uin, 'utf-8')) 
-if uin == 'img':
-    img = open(input("File path or name: "), "rb")
-    f = img.read()
-    print (img.read())
-    imb = bytearray(f)
-    time.sleep(1)
-    sock.send(imb)
+uin = ''
+while uin != 'exit()':
+    uin = input("$ ")
+    if uin == 'img':
+        try:
+            with open(input("Path to image: "), "rb") as image:
+                f = image.read()
+                b = bytearray(f)
+                sock.send(b)
+        except FileNotFoundError:
+            print("This file isn't exists")
+    else:
+        sock.send(bytes(uin, 'utf-8')) 
 
 data = sock.recv(10485760) #receiving message from 'localhost'
 sock.close() #closing connection
-
-print (data.decode('utf-8')) 

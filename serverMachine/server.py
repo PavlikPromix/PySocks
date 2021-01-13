@@ -1,33 +1,37 @@
 import socket
 import os
 import io
-import PIL.Image as Image
-from PIL import ImageFile
-from array import array
-ImageFile.LOAD_TRUNCATED_IMAGES = True
+import PIL
+from PIL import Image
 
 def decim(dta):
     image = Image.open(io.BytesIO(dta))
     image.save("received.png")
 
-soc = socket.socket() #creating socket() object
-soc.bind(('', 9090)) #binding our server to sertain type of connection (argument 1, blank means any type) and port (argiment 2)
-soc.listen(1) #starting to listen port for incoming connections
-conn, addr = soc.accept() #accepting incoming connections; method .accept() returns new socket (conn) and client's address (addr)
+soc = socket.socket() 
+soc.bind(('', 9090)) 
+soc.listen(1) 
+conn, addr = soc.accept() 
 
 print(addr, " connected")
 
 while True:
-    data = conn.recv(10485760) #receiving 10Mb of data
-    if not data:
+    try:
+        data = conn.recv(10485760) #receiving 10Mb of data
+    except ConnectionAbortedError:
+        print("Client disconnected")
         break
-    ddata = data.decode("utf-8")
-    print (ddata)
-    if ddata == 'img':
-        data = conn.recv(10485760)
+    except KeyboardInterrupt:
+        print ("Server stopped")
+    try:
+        ddata = data.decode("utf-8")
+        conn.send(data.upper())
+    except UnicodeDecodeError:
         decim(data)
-        conn.send(bytes("Image received!", 'utf-8'))
-    else:
-        conn.send(data.upper()) #sending answer
+    except KeyboardInterrupt:
+        print ("Download stopped")
+    if not data:
+        print ("Connection interrupted")
+        break
     
-conn.close() #closing connection
+conn.close() 
