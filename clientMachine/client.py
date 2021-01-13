@@ -6,9 +6,9 @@ from PIL import Image
 sock = socket.socket() #creating socket() obj
 sock.connect((input("Enter ip: "), 9090)) #connecting to 'localhost' with port 9090
 uin = ''
-while uin != 'exit()':
+while uin != '!exit':
     uin = input("$ ")
-    if uin == 'img':
+    if uin == '!img':
         try:
             with open(input("Path to image: "), "rb") as image:
                 f = image.read()
@@ -16,6 +16,8 @@ while uin != 'exit()':
                 sock.send(b)
         except FileNotFoundError:
             print("This file isn't exists")
+    elif uin == '!help':
+        print ("\nHelp executed\n\n!img - starts image sending process\n\n!help - what is wrong with you!?\n\n!exit - will close this program\n")
     else:
         sock.send(bytes(uin, 'utf-8')) 
 
