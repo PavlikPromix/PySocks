@@ -2,6 +2,8 @@ import socket
 import io
 import os
 from PIL import Image
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 sock = socket.socket() #creating socket() obj
 sock.connect((input("Enter ip: "), 9090)) #connecting to 'localhost' with port 9090
