@@ -12,10 +12,12 @@ while uin != '!exit':
     uin = input("$ ")
     if uin == '!img':
         try:
-            with open(input("Path to image: "), "rb") as image:
-                f = image.read()
-                b = bytearray(f)
-                sock.send(b)
+            byteImgIO = io.BytesIO()
+            byteImg = Image.open(input("Path to image: "), "r")
+            byteImg.save(byteImgIO, "PNG")
+            byteImgIO.seek(0)
+            byteImg = byteImgIO.read()
+            sock.send(byteImg)
         except FileNotFoundError:
             print("This file isn't exists")
     elif uin == '!help':
