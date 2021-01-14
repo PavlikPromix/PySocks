@@ -3,10 +3,13 @@ import os
 import io
 import PIL
 from PIL import Image
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def decim(dta):
-    image = Image.open(io.BytesIO(dta))
-    image.save("received.png")
+    dataBytesIO = io.BytesIO(dta)
+    img = Image.open(dataBytesIO)
+    img.save("received.png")
 
 soc = socket.socket() 
 soc.bind(('', 9090)) 
