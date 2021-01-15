@@ -5,6 +5,9 @@ from PIL import Image
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+def FileToBytes():  
+    return open(input("Path to image: "), "rb").read()  
+
 sock = socket.socket() #creating socket() obj
 sock.connect((input("Enter ip: "), 9090)) #connecting to 'localhost' with port 9090
 uin = ''
@@ -12,12 +15,7 @@ while uin != '!exit':
     uin = input("$ ")
     if uin == '!img':
         try:
-            byteImgIO = io.BytesIO()
-            byteImg = Image.open(input("Path to image: "), "r")
-            byteImg.save(byteImgIO, "PNG")
-            byteImgIO.seek(0)
-            byteImg = byteImgIO.read()
-            sock.send(byteImg)
+            sock.send(FileToBytes())
         except FileNotFoundError:
             print("This file isn't exists")
     elif uin == '!help':
