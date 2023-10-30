@@ -1,5 +1,5 @@
 # PySocks
-Simple client/server app on python
+Simple client/server file sharing app on python
 
 ## Installation
 ```bash
